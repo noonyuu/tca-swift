@@ -1,10 +1,3 @@
-//
-//  Item.swift
-//  prc
-//
-//  Created by shimizu on 2025/09/05.
-//
-
 import Foundation
 import SwiftData
 
