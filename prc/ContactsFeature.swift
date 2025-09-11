@@ -2,6 +2,9 @@ import ComposableArchitecture
 import Foundation
 import SwiftUI
 
+// IDの一元管理 - UUIDを親で生成することで一意性を保証
+// ビジネスロジックの集約 - 生成ルールやデフォルト値などを親が管理
+// 親が全体のデータを把握しているから初期値を適切に設定できる
 struct Contact: Equatable, Identifiable {
     let id: UUID
     var name: String
@@ -11,6 +14,9 @@ struct Contact: Equatable, Identifiable {
 struct ContactsFeature {
     @ObservableState
     struct State: Equatable {
+        // プレゼンテーション制御 - nil で非表示、値ありで表示を簡単に管理できる
+        // TCA の .ifLet でこの生成・破棄を自動化できる
+        // メモリの効率化 - 不要な状態を持たず、必要なときだけ生成される
         @Presents var addContact: AddContactFeature.State?
         var contacts: IdentifiedArrayOf<Contact> = []
     }
@@ -31,6 +37,7 @@ struct ContactsFeature {
             //     state.addContact = nil
             //     return .none
 
+            // 親のaddContactアクション -> 子が表示中の場合 -> 子のdelegateアクション -> saveContactアクション -> 値を取り出す
             case let .addContact(.presented(.delegate(.saveContact(contact)))):
                 // guard let contact = state.addContact?.contact
                 // else { return .none }
