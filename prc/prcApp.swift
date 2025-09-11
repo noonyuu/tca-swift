@@ -1,24 +1,15 @@
+import ComposableArchitecture
 import SwiftUI
-import SwiftData
 
 @main
 struct prcApp: App {
-    var sharedModelContainer: ModelContainer = {
-        let schema = Schema([
-            Item.self,
-        ])
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-
-        do {
-            return try ModelContainer(for: schema, configurations: [modelConfiguration])
-        } catch {
-            fatalError("Could not create ModelContainer: \(error)")
-        }
-    }()
-
+    static let store = Store(initialState: AppFeature.State()) {
+        AppFeature()
+    }
+    
     var body: some Scene {
-        static let store = Store(initialState: AppFeature.State()) {
-            AppFeature()
+        WindowGroup {
+            AppView(store: prcApp.store)
         }
     }
 }
