@@ -17,9 +17,8 @@ struct prcApp: App {
     }()
 
     var body: some Scene {
-        WindowGroup {
-            ContentView()
+        static let store = Store(initialState: AppFeature.State()) {
+            AppFeature()
         }
-        .modelContainer(sharedModelContainer)
     }
 }
